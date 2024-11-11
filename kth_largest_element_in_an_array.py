@@ -23,11 +23,11 @@ class Solution:
                 else:
                     not_sorted_flag = False
 
-        ind = len(nums)
-        while ind > 0:
-            print(nums[ind - 1])
-            ind = ind >> 1
-        print('------')
+        # ind = len(nums)
+        # while ind > 0:
+        #     print(nums[ind - 1])
+        #     ind = ind >> 1
+        # print('------')
 
         start_ind = len(nums)
         end_ind = len(nums) >> 1
@@ -38,8 +38,8 @@ class Solution:
         while not_sorted_flag:
             start_ind = len(nums) - 1
             # end_ind = ((len(nums) + 1) >> 1) - 2
-            end_ind = 0
-            print(nums[end_ind + 1:start_ind+1])
+            end_ind = max(((k - 1) >> 1) - 2, 0)
+            # print(nums[end_ind + 1:start_ind+1])
             for ind in range(start_ind, end_ind, -1):
                 if nums[ind - 1] < nums[ind]:
                     temp = nums[ind - 1]
@@ -51,10 +51,10 @@ class Solution:
             else:
                 not_sorted_flag = False
 
-        ind = len(nums)
-        while ind > 0:
-            print(nums[ind - 1])
-            ind = ind >> 1
+        # ind = len(nums)
+        # while ind > 0:
+        #     print(nums[ind - 1])
+        #     ind = ind >> 1
 
         print(nums)
         return nums[k-1]
