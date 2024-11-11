@@ -9,8 +9,26 @@ class Solution:
         def return_sorted_idx():
             pass
         def sort_branch(nums, ind):
-            pass
-        ind = len(nums)-1
+            not_sorted_flag = True
+            while not_sorted_flag:
+                h = ind
+                while h > 1:
+                    h1 = h >> 1
+                    if nums[h1 - 1] < nums[h - 1]:
+                        temp = nums[h1 - 1]
+                        nums[h1 - 1] = nums[h - 1]
+                        nums[h - 1] = temp
+                        break
+                    h = h1
+                else:
+                    not_sorted_flag = False
+        ind = len(nums)
+        while ind > 0:
+            print(nums[ind - 1])
+            ind = ind >> 1
+        print('------')
+        ind = len(nums)
+        sort_branch(nums, ind)
         while ind > 0:
             print(nums[ind - 1])
             ind = ind >> 1
