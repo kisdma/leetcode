@@ -7,16 +7,16 @@ def findKthLargest(nums, k):
         return min(nums)
     def return_sorted_idx():
         pass
-    def sort_branch(nums, ind, shift=0):
-        if nums[(ind >> 1) - 1 + shift] >= nums[ind - 1 + shift]:
+    def sort_branch(nums, ind):
+        if nums[(ind >> 1) - 1] >= nums[ind - 1]:
             return
-        if nums[0 + shift] < nums[ind - 1 + shift]:
-            move_branch(nums, ind, ind.bit_length() - 1, shift)
+        if nums[0] < nums[ind - 1]:
+            move_branch(nums, ind, ind.bit_length() - 1)
             return
         intervals = (ind.bit_length() - 2) >> 1
         pos = intervals
         while intervals > 0:
-            if nums[(ind >> (pos + 1)) - 1 + shift] >= nums[ind - 1 + shift]:
+            if nums[(ind >> (pos + 1)) - 1] >= nums[ind - 1]:
                 if intervals == 3:
                     intervals = 2
                 elif intervals == 2:
@@ -33,66 +33,40 @@ def findKthLargest(nums, k):
                     intervals = (intervals >> 1)# + (intervals & 1)
                 pos += intervals
             if pos < 0:
-                move_branch(nums, ind, 1, shift)
+                move_branch(nums, ind, 1)
                 return
-        if nums[(ind >> (pos + 1)) - 1 + shift] >= nums[ind - 1 + shift]:
-            move_branch(nums, ind, pos, shift)
+        if nums[(ind >> (pos + 1)) - 1] >= nums[ind - 1]:
+            move_branch(nums, ind, pos)
             return
         else:
-            move_branch(nums, ind, pos + 1, shift)
+            move_branch(nums, ind, pos + 1)
             return
-        
-    def move_branch(nums, ind, n, shift=0):
+    def move_branch(nums, ind, n):
         # print(nums, ind, n)
-        temp = nums[ind - 1 + shift]
+        temp = nums[ind - 1]
         for i in range(n):
             ind1 = ind >> 1
-            nums[ind - 1 + shift] = nums[ind1 - 1 + shift]
+            nums[ind - 1] = nums[ind1 - 1]
             ind = ind1
-        nums[ind - 1 + shift] = temp
+        nums[ind - 1] = temp
         return
-    
-    def f1():
-        ind = 0
-        h = 0
-        while ind < len(nums) - 1:
-            ind1 = min(ind + 2 ** h, len(nums))
-            print(nums[ind:ind1])
-            ind = ind1
-            h += 1
-        print('-----')
-            
-    f1()
-    
-    for i in range(int(sqrt(len(nums)))):
-        for s in range(len(nums).bit_length()):
-            shift = 2 ** s - 1
-            ind = 2
-            while ind < len(nums) - shift:
-                if nums[ind - 1 + shift] < nums[ind + shift]:
-                    temp = nums[ind - 1 + shift]
-                    nums[ind - 1 + shift] = nums[ind + shift]
-                    nums[ind + shift] = temp
-                sort_branch(nums, ind, shift = shift)
-                ind += 2
-            if not((len(nums) - shift) & 1):
-                sort_branch(nums, ind, shift = shift)
-        
-    f1()
 
-    # ind = len(nums)
-    # end_ind = k - 1
-    # while ind > end_ind:
-    #     min1 = nums[ind - 1]
-    #     ind_x = ind
-    #     for ind1 in range(ind - 1, ind >> 1, -1):
-    #         if nums[ind1 - 1] < min1:
-    #             ind_x = ind1
-    #             min1 = nums[ind1 - 1]
-    #     if ind_x != ind:
-    #         nums[ind_x - 1] = nums[ind - 1]
-    #         nums[ind - 1] = min1
-    #         sort_branch(nums, ind_x)
-    #     ind -= 1
+    for ind in range(1, len(nums)):
+        sort_branch(nums, ind)
+
+    ind = len(nums)
+    end_ind = k - 1
+    while ind > end_ind:
+        min1 = nums[ind - 1]
+        ind_x = ind
+        for ind1 in range(ind - 1, ind >> 1, -1):
+            if nums[ind1 - 1] < min1:
+                ind_x = ind1
+                min1 = nums[ind1 - 1]
+        if ind_x != ind:
+            nums[ind_x - 1] = nums[ind - 1]
+            nums[ind - 1] = min1
+            sort_branch(nums, ind_x)
+        ind -= 1
 
     return nums[k-1]
