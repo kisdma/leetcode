@@ -44,15 +44,7 @@ def findKthLargest(nums, k):
         nums[ind - 1 + shift] = temp
         return
 
-    ind = 2
-    while ind < len(nums):
-        if nums[ind - 1] < nums[ind]:
-            temp = nums[ind - 1]
-            nums[ind - 1] = nums[ind]
-            nums[ind] = temp
-        sort_branch(nums, ind)
-        ind += 2
-    if not(len(nums) & 1):
+    for ind in range(2, len(nums) + 1):
         sort_branch(nums, ind)
 
     ind = len(nums)
